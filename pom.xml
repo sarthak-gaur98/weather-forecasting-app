@@ -66,6 +66,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>weather-forecast-image</finalName>
 	</build>
 
 </project>
