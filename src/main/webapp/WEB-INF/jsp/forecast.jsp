@@ -12,7 +12,7 @@
 	.card {
 	  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 	  transition: 0.3s;
-	  width: 40%;
+	  width: 30%;
 	}
 	
 	.card:hover {
@@ -23,8 +23,39 @@
 	  padding: 2px 16px;
 	}
 	
-	.mainBlock {
-		display: inline-block;
+	input[type=text], select {
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	}
+	
+	input[type=submit] {
+	  background-color: #4CAF50;
+	  color: white;
+	  padding: 14px 20px;
+	  margin: 8px 0;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+	
+	input[type=submit]:hover {
+	  background-color: #45a049;
+	}
+	
+	h2 {
+	  color: green;
+	}
+	
+	.weatherHeaders {
+	  color: blue;
+	}
+	
+	li {
+	  color: yellow
 	}
 </style>
 </head>
@@ -40,11 +71,11 @@
 	<div class="mainBlock">
 		<div class="card">
 		  <div>
-		  	<h2>Weather report for : ${forecast.date}</h2>
+		  	<h3>Weather report for : ${forecast.date}</h3>
 		  </div>
 		  <div class="container">
-		    <p>Max Temp: ${forecast.maxTemp} Kelvin</p>
-		    <p>Min Temp: ${forecast.minTemp} Kelvin</p>
+		    <p class="weatherHeaders">Max Temp: ${forecast.maxTemp} Kelvin</p>
+		    <p class="weatherHeaders">Min Temp: ${forecast.minTemp} Kelvin</p>
 		    <c:if test="${fn:length(forecast.weatherList) > 0}">
 		    	<p>Speculated weather conditions: </p>
 		    	<ul>
