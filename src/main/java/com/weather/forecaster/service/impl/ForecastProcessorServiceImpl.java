@@ -1,7 +1,9 @@
 package com.weather.forecaster.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -14,7 +16,6 @@ import com.weather.forecaster.model.ResponseCode;
 import com.weather.forecaster.model.UserOutput;
 import com.weather.forecaster.service.ForecastProcessorService;
 import static com.weather.forecaster.constants.ServiceConstants.API_URL_PREFIX;
-import static com.weather.forecaster.constants.ServiceConstants.API_URL_SUFFIX;
 import static com.weather.forecaster.constants.ServiceConstants.TIMESTAMP_MULTIPLIER;
 import static com.weather.forecaster.constants.ServiceConstants.DAYS_THRESHOLD;
 import static com.weather.forecaster.constants.ServiceConstants.MILLISECONDS_TO_DAYS_FACTOR;
@@ -38,10 +39,14 @@ import java.util.Set;
  */
 
 @Service
+@PropertySource("classpath:keys.properties")
 public class ForecastProcessorServiceImpl implements ForecastProcessorService {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Value("${API_KEY}")
+	private String apiKey;
 	
 	/**
 	 * Fetch output from API call converting JSON object to ForecastOutput object
@@ -50,9 +55,10 @@ public class ForecastProcessorServiceImpl implements ForecastProcessorService {
 	@Cacheable("city-input")
 	@Override
 	public UserOutput getForecastOutput(ForecastInput input) {
+		System.out.println("API Key: "+apiKey);
 		try {
 			String city = input.getCity();
-			ForecastOutput forecastQueryOutput = restTemplate.getForObject(String.format("%s%s%s", API_URL_PREFIX, city, API_URL_SUFFIX), ForecastOutput.class);
+			ForecastOutput forecastQueryOutput = restTemplate.getForObject(String.format("%s%s%s", API_URL_PREFIX, city, apiKey), ForecastOutput.class);
 			System.out.println("Data: " + forecastQueryOutput);
 			Map<Integer, List<ForecastDailyParameters>> forecastOutputMap = convertOutputToMap(forecastQueryOutput);
 			return generateOutput(forecastOutputMap);
